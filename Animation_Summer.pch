@@ -236,8 +236,7 @@ CASpringAnimation：继承CABasicAnimation (iOS 9)
  @property float startProgress;
  //结束进度,默认1.0.如果设置0.6,那么动画将从动画的0.6部分以后就会结束
  @property float endProgress;
- //开始进度
- @property(nullable, strong) id filter;
+ 
  
  CATransition也是继承CAAnimation,系统默认提供了12种动画样式,加上4个动画方向,除了方向不可控的四种效果外,大概一共提供了36种动画.
  
