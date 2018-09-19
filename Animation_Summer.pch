@@ -1,0 +1,256 @@
+/**
+ 
+ 1.Core Animation介绍
+ 
+ CAAnimation：Core Animation中动画的抽象超类（The abstract superclass for animations in Core Animation.）
+ 
+ CAAnmiation支持CAMediaTiming和CAAction的基本协议，不能直接创建CAAnimation的实例，Core Animation layers or SceneKit objects对象实现动画效果创建相关的子类：CABasicAnimation、CAKeyframeAnimation、CATransition、CASpringAnimation、CAAnimationGroup
+ 
+ CAPropertyAnimation：CAAnimation的抽象子类，用于创建操纵图层属性值的动画。CABasicAnimation和CAKeyframeAnimation其子类
+ CAPropertyAnimation和CAAnimtion一样都是无法创建实例类型
+ 
+ 
+ 可以使用创建实例对象的动画类：
+ 
+ 1.基础动画：   CABasicAnimation
+ 2.关键帧动画：  CAKeyframeAnimation
+ 3.转场动画:    CATransition
+ 4.弹性动画：   CASpringAnimation
+ 5.动画组合：   CAAnimationGroup
+ 
+ 
+ CAAnimation 之间的继承关系
+     CAAnimation｛
+         CAPropertyAnimation {
+             CABasicAnimation {
+                CASpringAnimation
+             }
+             CAKeyframeAnimation
+        }
+     CATransition
+     CAAnimationGroup
+ }
+ 
+ 
+ 2.CAAnimation详细介绍
+ 2.1.CAAnimation类
+ CAAnimation：Core Animation中动画的抽象超类（引子：苹果文档）
+ 
+ CAAnimation的父类是NSObject，遵守NSSecureCoding, NSCopying, CAMediaTiming, CAAction协议，拥有
+ 
+ 方法l：
+ 
+ + (instancetype)animation;          // 创建实例对象
+ // 设置动画key值(在CALayer添加动画时，添加动画并设置key:CALayer方法中设置- (void)addAnimation:(CAAnimation *)anim forKey:(nullable NSString *)key;)
+ + (nullable id)defaultValueForKey:(NSString *)key;   //
+ - (BOOL)shouldArchiveValueForKey:(NSString *)key;
+ 
+ 
+ 属性类别：
+ 
+ // 设置 动画一段时的快慢
+ //设置了其动画的时间函数为CAMediaTimingFunction(name:kCAMediaTimingFunctionLinear)。时间函数通过修改持续时间的分数来控制动画的速度。(猜想：通过这个方法设置CAMediaTiming协议下的speed)
+ 
+ kCAMediaTimingFunctionLinear  //线型移动
+ kCAMediaTimingFunctionEaseIn  //淡入
+ kCAMediaTimingFunctionEaseOut   //淡出
+ kCAMediaTimingFunctionEaseInEaseOut   //淡入淡出
+ kCAMediaTimingFunctionDefault       // 默认
+ 同时可以通过自定义CAMediaTimingFunction时间功能定义动画的时间
+ 
+ @property(nullable, strong) CAMediaTimingFunction *timingFunction;
+ 
+ // 动画的执行的两个阶段的代理
+ @property(nullable, strong) id <CAAnimationDelegate> delegate;
+ 
+ // 是否 移除动画执行完渲染树，
+ 默认情况下是YES，动画执行完CALayer恢复最初状态
+ 为：NO，保留原始CALayer渲染树。
+ 注意：在使用fillMode动画时，不能使用YES（执行完成后，动画内容消失）
+ 
+ @property(getter=isRemovedOnCompletion) BOOL removedOnCompletion;
+ 
+ 
+ 2.2 CAAnimation的协议详解
+ NSSecureCoding, NSCopying对应的内容无需要多解释
+ CAAction:
+ 协议方法：
+ 
+ - (void)runActionForKey:(NSString *)event object:(id)anObject
+ arguments:(nullable NSDictionary *)dict;（被调用以在接收器上触发名为“path”的事件。 事件发生的对象（例如图层）是“anObject”。 参数字典可以是nil，如果是非nil，它携带与事件相关的参数）
+ 
+ CAMediaTiming：CAMediaTiming协议实现 layers动画，CAMediaTiming
+ CAMediaTiming协议通过设置开始时间、动画执行时间、次数以及speed、timeoffset的方式控制动画
+ 
+ //设置当前动画开始的时间，如果没有设置默认为0，动画当前生成的时间
+ @property CFTimeInterval beginTime;
+ // 设置 动画执行的时长 默认：0
+ @property CFTimeInterval duration;
+ 
+ // 可以通过这两个参数设置更复杂的动画效果，可以实现动画的暂停、快进等效果
+ //动画执行时间： t = (tp - begin) * speed + offset
+ // 动画执行时间为：t     系统时间：tp   动画开始时间：begin
+ // 默认情况下，speed：1     offset：0
+ // speed：单位时间执行的rate  例子：如果rate是2  本地时间是当前时间快两倍
+ @property float speed;
+ @property CFTimeInterval timeOffset;
+ 
+ 
+ //执行的重复次数
+ @property float repeatCount;
+ 
+ //每次执行的时长   默认时间为0
+ @property CFTimeInterval repeatDuration;
+ 
+ // 是否 动画逆转执行；自定义为NO
+ @property BOOL autoreverses;
+ 
+ 
+ //默认是kCAFillModeRemoved，当动画不再播放的时候就显示图层模型指定的值剩下的三种类型向前，向后或者即向前又向后去填充动画状态，使得动画在开始前或者结束后仍然保持开始和结束那一刻的值。其中一下四种类型：
+ kCAFillModeForwards
+ kCAFillModeBackwards
+ kCAFillModeBoth
+ kCAFillModeRemoved
+ 
+ @property(copy) CAMediaTimingFillMode fillMode;
+ 
+ 
+ 总结：单位时间内一个物体改变量（距离、颜色、形状等）形成动画。而CAAnimation类是对动画时间相关的内容的处理，相关的量值并没有定义，CAAnimation并不能构成一个动画的完整条件，只能让其子类来实现完整的动画。
+ */
+
+
+/**
+CAPropertyAnimation：继承CAAnimation
+创建CAPropertyAnimation需要设置『动画对象』的关键keyPath（每个对象的属性都是一个keypath值）
+
+ CAAnimation的抽象子类，用于创建操纵图层属性值的动画。CABasicAnimation和CAKeyframeAnimation其子类
+ + (instancetype)animationWithKeyPath:(nullable NSString *)path;
+ 
+ //用于设置动画对象key-path值
+ @property(nullable, copy) NSString *keyPath;
+ 
+ //这两个值是只读属性的值，不需要关心
+ @property(getter=isAdditive) BOOL additive;
+ @property(getter=isCumulative) BOOL cumulative;
+ 
+ //如果非nil是在将插值设置为动画的目标属性的新显示值之前应用于插值的函数。 默认为零。
+ @property(nullable, strong) CAValueFunction *valueFunction;
+
+ 
+
+CABasicAnimation : 继承CAPropertyAnimation
+
+@property(nullable, strong) id fromValue;
+@property(nullable, strong) id toValue;
+@property(nullable, strong) id byValue;
+
+ 这三个属性之间的规则
+ 
+ fromValue和toValue不为空,动画的效果会从fromValue的值变化到toValue.
+ fromValue和byValue都不为空,动画的效果将会从fromValue变化到fromValue+byValue
+ toValue和byValue都不为空,动画的效果将会从toValue-byValue变化到toValue
+ 只有fromValue的值不为空,动画的效果将会从fromValue的值变化到当前的状态.
+ 只有toValue的值不为空,动画的效果将会从当前状态的值变化到toValue的值.
+ 只有byValue的值不为空,动画的效果将会从当前的值变化到(当前状态的值+byValue)的值.
+ 
+ 
+ 
+ CAKeyframeAnimation:继承CAPropertyAnimation
+ 
+// values  为动画提供一个关键帧的关键值得关键点
+@property(nullable, copy) NSArray *values;
+// 提供一个动画执行的路径，默认为nil，如果不为空，设置为kCAAnimationPaced
+@property(nullable) CGPathRef path;
+
+
+// 关键帧之间动画的时间节点，rang为[0,1]
+@property(nullable, copy) NSArray<NSNumber *> *keyTimes;
+
+// 设置关键帧之间的动画快慢效果
+@property(nullable, copy) NSArray<CAMediaTimingFunction *> *timingFunctions;
+
+ The "calculation mode". Possible values are `discrete', `linear',
+`paced', `cubic' and `cubicPaced'. Defaults to `linear'. When set to
+  `paced' or `cubicPaced' the `keyTimes' and `timingFunctions'
+properties of the animation are ignored and calculated implicitly.
+
+@property(copy) CAAnimationCalculationMode calculationMode;
+
+
+ 对于具有三次计算模式的动画，这些属性提供对插值方案的控制。 每个关键帧可能具有与之关联的张力，连续性和偏差值，每个都在[-1,1]范围内（这定义了Kochanek-Bartels样条，请参阅http://en.wikipedia.org/wiki/Kochanek-Bartels_spline）。
+ 
+ 张力值控制曲线的“紧密度”（正值更紧，负值更圆）。 连续性值控制段的连接方式（正值给出尖角，负值给出倒角）。 偏差值定义曲线发生的位置（正值在控制点之前移动曲线，负值在控制点之后移动它）。
+ 
+ 每个数组中的第一个值定义第一个控制点的切线的行为，第二个值控制第二个点的切线，依此类推。 任何未指定的值都默认为零（如果未指定所有值，则给出Catmull-Rom样条曲线）。
+
+@property(nullable, copy) NSArray<NSNumber *> *tensionValues;
+@property(nullable, copy) NSArray<NSNumber *> *continuityValues;
+@property(nullable, copy) NSArray<NSNumber *> *biasValues;
+ 
+//如果关键帧执行过程中自动相反旋转
+@property(nullable, copy) CAAnimationRotationMode rotationMode;
+
+CASpringAnimation：继承CABasicAnimation (iOS 9)
+ 
+ /理解下面的属性的时候可以结合现实物理现象,比如把它想象成一个弹簧上挂着一个金属小球
+ //质量,振幅和质量成反比
+ @property CGFloat mass;
+ //刚度系数(劲度系数/弹性系数),刚度系数越大,形变产生的力就越大,运动越快
+ @property CGFloat stiffness;
+ //阻尼系数,阻止弹簧伸缩的系数,阻尼系数越大,停止越快,可以认为它是阻力系数
+ @property CGFloat damping;
+ //初始速率,动画视图的初始速度大小速率为正数时,速度方向与运动方向一致,速率为负数时,速度方向与运动方向相反.
+ @property CGFloat initialVelocity;
+ //结算时间,只读.返回弹簧动画到停止时的估算时间，根据当前的动画参数估算通常弹簧动画的时间使用结算时间比较准确
+ @property(readonly) CFTimeInterval settlingDuration;
+ 
+*/
+
+
+
+/**
+ CATransition:继承 CAAnimation
+ //转场类型,字符串类型参数.系统提供了四中动画形式:
+ //kCATransitionFade//逐渐消失
+ //kCATransitionMoveIn//移进来
+ //kCATransitionPush//推进来
+ //kCATransitionReveal//揭开
+ //另外,除了系统给的这几种动画效果,我们还可以使用系统私有的动画效果:
+ //@"cube",//立方体翻转效果
+ //@"oglFlip",//翻转效果
+ //@"suckEffect",//收缩效果,动画方向不可控
+ //@"rippleEffect",//水滴波纹效果,动画方向不可控
+ //@"pageCurl",//向上翻页效果
+ //@"pageUnCurl",//向下翻页效果
+ //@"cameralIrisHollowOpen",//摄像头打开效果,动画方向不可控
+ //@"cameraIrisHollowClose",//摄像头关闭效果,动画方向不可控
+ @property(copy) NSString *type;
+ //转场方向,系统一共提供四个方向:
+ //kCATransitionFromRight//从右开始
+ //kCATransitionFromLeft//从左开始
+ //kCATransitionFromTop//从上开始
+ //kCATransitionFromBottom//从下开始
+ @property(nullable, copy) NSString *subtype;
+ 
+ //开始进度,默认0.0.如果设置0.3,那么动画将从动画的0.3的部分开始
+ @property float startProgress;
+ //结束进度,默认1.0.如果设置0.6,那么动画将从动画的0.6部分以后就会结束
+ @property float endProgress;
+ //开始进度
+ @property(nullable, strong) id filter;
+ 
+ CATransition也是继承CAAnimation,系统默认提供了12种动画样式,加上4个动画方向,除了方向不可控的四种效果外,大概一共提供了36种动画.
+ 
+ */
+
+
+
+
+/**
+    CAAnimationGroup继承于CAAnimation
+ 
+ CAAnimationGroup动画组
+ /只有一个属性,数组中接受CAAnimation元素
+ @property(nullable, copy) NSArray *animations;
+ 
+ */

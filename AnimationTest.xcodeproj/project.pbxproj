@@ -44,6 +44,7 @@
 		AC8C0121214F43260009022F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AC8C0128214FC3AA0009022F /* JW_BezierPathView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JW_BezierPathView.h; sourceTree = "<group>"; };
 		AC8C0129214FC3AA0009022F /* JW_BezierPathView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JW_BezierPathView.m; sourceTree = "<group>"; };
+		ACEBBA7C215239F400C3DA60 /* Animation_Summer.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Animation_Summer.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +61,7 @@
 		AC8C0106214F43240009022F = {
 			isa = PBXGroup;
 			children = (
+				ACEBBA7C215239F400C3DA60 /* Animation_Summer.pch */,
 				AC8C0111214F43240009022F /* AnimationTest */,
 				AC8C0110214F43240009022F /* Products */,
 			);

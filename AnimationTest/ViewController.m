@@ -16,11 +16,8 @@
 #import "TransitionVC.h"
 #import "AnimationGroupVC.h"
 
-
 @interface ViewController ()
-
 @end
-
 @implementation ViewController
 
 - (void)viewDidLoad {
@@ -31,8 +28,9 @@
     
     /**
      
+    1.Core Animation介绍
     
-     CAAnmiation：Core Animation中动画的抽象超类（The abstract superclass for animations in Core Animation.）
+     CAAnimation：Core Animation中动画的抽象超类（The abstract superclass for animations in Core Animation.）
      
      CAAnmiation支持CAMediaTiming和CAAction的基本协议，不能直接创建CAAnimation的实例，Core Animation layers or SceneKit objects对象实现动画效果创建相关的子类：CABasicAnimation、CAKeyframeAnimation、CATransition、CASpringAnimation、CAAnimationGroup
      
@@ -48,7 +46,107 @@
         4.弹性动画：   CASpringAnimation
         5.动画组合：   CAAnimationGroup
      
-     */
+     
+     CAAnimation 之间的继承关系
+     CAAnimation｛
+         CAPropertyAnimation {
+             CABasicAnimation {
+                CASpringAnimation
+             }
+             CAKeyframeAnimation
+         }
+         CATransition
+         CAAnimationGroup
+     }
+     
+     
+     2.CAAnimation详细介绍
+        2.1.CAAnimation类
+        CAAnimation：Core Animation中动画的抽象超类（引子：苹果文档）
+     
+     CAAnimation的父类是NSObject，遵守NSSecureCoding, NSCopying, CAMediaTiming, CAAction协议，拥有
+     
+     方法l：
+     
+        + (instancetype)animation;          // 创建实例对象
+     // 设置动画key值(在CALayer添加动画时，添加动画并设置key:CALayer方法中设置- (void)addAnimation:(CAAnimation *)anim forKey:(nullable NSString *)key;)
+        + (nullable id)defaultValueForKey:(NSString *)key;   //
+        - (BOOL)shouldArchiveValueForKey:(NSString *)key;
+     
+     
+     属性类别：
+    
+     // 设置 动画一段时的快慢
+    //设置了其动画的时间函数为CAMediaTimingFunction(name:kCAMediaTimingFunctionLinear)。时间函数通过修改持续时间的分数来控制动画的速度。(猜想：通过这个方法设置CAMediaTiming协议下的speed)
+     
+     kCAMediaTimingFunctionLinear  //线型移动
+     kCAMediaTimingFunctionEaseIn  //淡入
+     kCAMediaTimingFunctionEaseOut   //淡出
+     kCAMediaTimingFunctionEaseInEaseOut   //淡入淡出
+     kCAMediaTimingFunctionDefault       // 默认
+     同时可以通过自定义CAMediaTimingFunction时间功能定义动画的时间
+     
+        @property(nullable, strong) CAMediaTimingFunction *timingFunction;
+     
+     // 动画的执行的两个阶段的代理
+        @property(nullable, strong) id <CAAnimationDelegate> delegate;
+     
+     // 是否 移除动画执行完渲染树，
+        默认情况下是YES，动画执行完CALayer恢复最初状态
+        为：NO，保留原始CALayer渲染树。
+        注意：在使用fillMode动画时，不能使用YES（执行完成后，动画内容消失）
+
+        @property(getter=isRemovedOnCompletion) BOOL removedOnCompletion;
+     
+     
+     2.2 CAAnimation的协议详解
+        NSSecureCoding, NSCopying对应的内容无需要多解释
+        CAAction:
+     协议方法：
+     
+        - (void)runActionForKey:(NSString *)event object:(id)anObject
+     arguments:(nullable NSDictionary *)dict;（被调用以在接收器上触发名为“path”的事件。 事件发生的对象（例如图层）是“anObject”。 参数字典可以是nil，如果是非nil，它携带与事件相关的参数）
+     
+        CAMediaTiming：CAMediaTiming协议实现 layers动画，CAMediaTiming
+     CAMediaTiming协议通过设置开始时间、动画执行时间、次数以及speed、timeoffset的方式控制动画
+    
+    //设置当前动画开始的时间，如果没有设置默认为0，动画当前生成的时间
+     @property CFTimeInterval beginTime;
+     // 设置 动画执行的时长 默认：0
+    @property CFTimeInterval duration;
+    
+     // 可以通过这两个参数设置更复杂的动画效果，可以实现动画的暂停、快进等效果
+     //动画执行时间： t = (tp - begin) * speed + offset
+     // 动画执行时间为：t     系统时间：tp   动画开始时间：begin
+     // 默认情况下，speed：1     offset：0
+     // speed：单位时间执行的rate  例子：如果rate是2  本地时间是当前时间快两倍
+    @property float speed;
+    @property CFTimeInterval timeOffset;
+    
+    
+    //执行的重复次数
+    @property float repeatCount;
+    
+     //每次执行的时长   默认时间为0
+    @property CFTimeInterval repeatDuration;
+     
+    // 是否 动画逆转执行；自定义为NO
+    @property BOOL autoreverses;
+    
+    
+    //默认是kCAFillModeRemoved，当动画不再播放的时候就显示图层模型指定的值剩下的三种类型向前，向后或者即向前又向后去填充动画状态，使得动画在开始前或者结束后仍然保持开始和结束那一刻的值。其中一下四种类型：
+     kCAFillModeForwards
+     kCAFillModeBackwards
+     kCAFillModeBoth
+     kCAFillModeRemoved
+     
+    @property(copy) CAMediaTimingFillMode fillMode;
+
+     
+     总结：单位时间内一个物体改变量（距离、颜色、形状等）形成动画。而CAAnimation类是对动画时间相关的内容的处理，相关的量值并没有定义，CAAnimation并不能构成一个动画的完整条件，只能让其子类来实现完整的动画。
+    */
+    
+
     
     NSArray *btnArrTitle = @[@"BasicAnimation",@"KeyframeAnimation",@"Transition",@"SpringAnimation",@"AnimationGroup"];
     NSInteger lineNum = 2;
@@ -58,7 +156,7 @@
     CGFloat oneWith = BtnWith + 30;
     CGFloat oneHeigth = btnHeight + 30;
    
-    for (int i = 0; i< 5; i++) {
+    for (int i = 0; i< btnArrTitle.count; i++) {
         NSInteger currentLineNum = i / lineNum;
         NSInteger currentEveryNum = i % lineNum;
         UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(20 + oneWith * currentEveryNum, 100 + currentLineNum * oneHeigth, BtnWith, btnHeight)];
@@ -72,17 +170,9 @@
         btn.layer.masksToBounds = true;
         [self.view addSubview:btn];
     }
-    
-    [self rotate];
-    
-//    // BezierPath
-//    JW_BezierPathView *jwView = [[JW_BezierPathView alloc] initWithFrame:self.view.frame];
-//    jwView.backgroundColor = [UIColor whiteColor];
-//    [self.view addSubview:jwView];
-    
+
 }
 
-//
 -(void)animationBtnAction:(UIButton *)send{
     NSInteger num = send.tag - 10;
     
@@ -97,77 +187,9 @@
 }
 
 
-- (void)rotate
-{
-    
-    UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(200, 200, 200, 100)];
-    
-    CAShapeLayer *lary = [[CAShapeLayer alloc] init];
-    lary.path = path.CGPath;
-    lary.fillColor = [UIColor clearColor].CGColor;
-    lary.strokeColor = [UIColor blueColor].CGColor;
-    [self.view.layer addSublayer:lary];
-    
-    
-    
-    CABasicAnimation *animation = [ CABasicAnimation
-                                   
-                                   animationWithKeyPath: @"transform" ];
-    
-    animation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
-    
-    
-    
-    //围绕Z轴旋转，垂直与屏幕
-    
-    animation.toValue = [ NSValue valueWithCATransform3D:
-                         
-                         
-                         
-                         CATransform3DMakeRotation(M_PI, 0.0, 0.0, 1.0) ];
-    
-    animation.duration = 0.5;
-    
-    //旋转效果累计，先转180度，接着再旋转180度，从而实现360旋转
-    animation.cumulative = YES;
-    animation.repeatCount = 1000;
-//    //在图片边缘添加一个像素的透明区域，去图片锯齿
-//
-//    CGRect imageRrect = CGRectMake(0, 0,imageView.frame.size.width, imageView.frame.size.height);
-//
-//    UIGraphicsBeginImageContext(imageRrect.size);
-//
-//    [imageView.image drawInRect:CGRectMake(1,1,imageView.frame.size.width-2,imageView.frame.size.height-2)];
-//
-//    imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-//
-//    UIGraphicsEndImageContext();
-    
-    
-    
-    [lary addAnimation:animation forKey:nil];
-    
-//    // 对Y轴进行旋转
-//    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.y"];
-//    // 1秒后执行
-//    animation.beginTime = CACurrentMediaTime() + 1;
-//    // 持续时间
-//    animation.duration = 2.5;
-//    // 重复次数
-//    animation.repeatCount = 100000;
-//    // 起始角度
-//    animation.fromValue = @(0.0);
-//    // 终止角度
-//    animation.toValue = @(2 * M_PI);
-//    // 添加动画
-//    [lary addAnimation:animation forKey:@"rotate"];
-}
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 @end
