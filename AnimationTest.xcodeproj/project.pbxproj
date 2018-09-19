@@ -7,15 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AC3F0E012151062D004A3B3D /* BaseAnimationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3F0E002151062D004A3B3D /* BaseAnimationVC.m */; };
+		AC3F0E04215109BA004A3B3D /* KeyFrameVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3F0E03215109BA004A3B3D /* KeyFrameVC.m */; };
+		AC3F0E07215109D0004A3B3D /* TransitionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3F0E06215109D0004A3B3D /* TransitionVC.m */; };
+		AC3F0E0A215109E2004A3B3D /* AnimationGroupVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3F0E09215109E2004A3B3D /* AnimationGroupVC.m */; };
+		AC3F0E0D21510D84004A3B3D /* SpringAnimationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AC3F0E0C21510D84004A3B3D /* SpringAnimationVC.m */; };
 		AC8C0114214F43240009022F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8C0113214F43240009022F /* AppDelegate.m */; };
 		AC8C0117214F43240009022F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8C0116214F43240009022F /* ViewController.m */; };
 		AC8C011A214F43240009022F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8C0118214F43240009022F /* Main.storyboard */; };
 		AC8C011C214F43260009022F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC8C011B214F43260009022F /* Assets.xcassets */; };
 		AC8C011F214F43260009022F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8C011D214F43260009022F /* LaunchScreen.storyboard */; };
 		AC8C0122214F43260009022F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8C0121214F43260009022F /* main.m */; };
+		AC8C012A214FC3AA0009022F /* JW_BezierPathView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8C0129214FC3AA0009022F /* JW_BezierPathView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AC3F0DFF2151062D004A3B3D /* BaseAnimationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseAnimationVC.h; sourceTree = "<group>"; };
+		AC3F0E002151062D004A3B3D /* BaseAnimationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseAnimationVC.m; sourceTree = "<group>"; };
+		AC3F0E02215109BA004A3B3D /* KeyFrameVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyFrameVC.h; sourceTree = "<group>"; };
+		AC3F0E03215109BA004A3B3D /* KeyFrameVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyFrameVC.m; sourceTree = "<group>"; };
+		AC3F0E05215109D0004A3B3D /* TransitionVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransitionVC.h; sourceTree = "<group>"; };
+		AC3F0E06215109D0004A3B3D /* TransitionVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransitionVC.m; sourceTree = "<group>"; };
+		AC3F0E08215109E2004A3B3D /* AnimationGroupVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimationGroupVC.h; sourceTree = "<group>"; };
+		AC3F0E09215109E2004A3B3D /* AnimationGroupVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnimationGroupVC.m; sourceTree = "<group>"; };
+		AC3F0E0B21510D84004A3B3D /* SpringAnimationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpringAnimationVC.h; sourceTree = "<group>"; };
+		AC3F0E0C21510D84004A3B3D /* SpringAnimationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpringAnimationVC.m; sourceTree = "<group>"; };
 		AC8C010F214F43240009022F /* AnimationTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnimationTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC8C0112214F43240009022F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AC8C0113214F43240009022F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -26,6 +42,8 @@
 		AC8C011E214F43260009022F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC8C0120214F43260009022F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC8C0121214F43260009022F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		AC8C0128214FC3AA0009022F /* JW_BezierPathView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JW_BezierPathView.h; sourceTree = "<group>"; };
+		AC8C0129214FC3AA0009022F /* JW_BezierPathView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JW_BezierPathView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +80,18 @@
 				AC8C0113214F43240009022F /* AppDelegate.m */,
 				AC8C0115214F43240009022F /* ViewController.h */,
 				AC8C0116214F43240009022F /* ViewController.m */,
+				AC3F0DFF2151062D004A3B3D /* BaseAnimationVC.h */,
+				AC3F0E002151062D004A3B3D /* BaseAnimationVC.m */,
+				AC3F0E02215109BA004A3B3D /* KeyFrameVC.h */,
+				AC3F0E03215109BA004A3B3D /* KeyFrameVC.m */,
+				AC3F0E05215109D0004A3B3D /* TransitionVC.h */,
+				AC3F0E06215109D0004A3B3D /* TransitionVC.m */,
+				AC3F0E0B21510D84004A3B3D /* SpringAnimationVC.h */,
+				AC3F0E0C21510D84004A3B3D /* SpringAnimationVC.m */,
+				AC3F0E08215109E2004A3B3D /* AnimationGroupVC.h */,
+				AC3F0E09215109E2004A3B3D /* AnimationGroupVC.m */,
+				AC8C0128214FC3AA0009022F /* JW_BezierPathView.h */,
+				AC8C0129214FC3AA0009022F /* JW_BezierPathView.m */,
 				AC8C0118214F43240009022F /* Main.storyboard */,
 				AC8C011B214F43260009022F /* Assets.xcassets */,
 				AC8C011D214F43260009022F /* LaunchScreen.storyboard */,
@@ -141,9 +171,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC3F0E07215109D0004A3B3D /* TransitionVC.m in Sources */,
 				AC8C0117214F43240009022F /* ViewController.m in Sources */,
+				AC3F0E012151062D004A3B3D /* BaseAnimationVC.m in Sources */,
+				AC3F0E0A215109E2004A3B3D /* AnimationGroupVC.m in Sources */,
+				AC3F0E04215109BA004A3B3D /* KeyFrameVC.m in Sources */,
 				AC8C0122214F43260009022F /* main.m in Sources */,
 				AC8C0114214F43240009022F /* AppDelegate.m in Sources */,
+				AC3F0E0D21510D84004A3B3D /* SpringAnimationVC.m in Sources */,
+				AC8C012A214FC3AA0009022F /* JW_BezierPathView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +322,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PN99H8F5HQ;
 				INFOPLIST_FILE = AnimationTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -303,6 +340,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PN99H8F5HQ;
 				INFOPLIST_FILE = AnimationTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
